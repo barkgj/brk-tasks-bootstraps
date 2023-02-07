@@ -1,0 +1,6 @@
+recipe of task 2
+
+foo bar
+
+[brk_task_instruction type='require_parameter' name='foo']
+[brk_task_instruction type='require_parameter' name='bar']
