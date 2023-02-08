@@ -1,6 +1,7 @@
 Create studio (task)
 
 [brk_task_instruction type='require_parameter' name='studio']
+[brk_task_instruction type='require_parameter' name='bootstrap_type']
 
 ---
 
@@ -38,6 +39,6 @@ Turn on error messages
 Restart the pool
 sudo systemctl restart php8.1-fpm
 
-Create and run task to setup a task to create new site in the studio of the vps
-Set hostname = ‘studio.{{studio}}’
-Set websitetype as ‘tasks’
+Create and run task instance to bootstrap the studio based on the '{{bootstrap_type}}'
+(bootstrapping a studio means to setup tasks to do things like create new sites in the studio,
+for example create a 'tasks' website, a 'media' website, an 'afnetix' website, etc.
