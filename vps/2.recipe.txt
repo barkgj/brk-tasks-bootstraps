@@ -1,6 +1,43 @@
-recipe of task 2
+Create studio (task)
 
-foo bar
+[brk_task_instruction type='require_parameter' name='studio']
 
-[brk_task_instruction type='require_parameter' name='foo']
-[brk_task_instruction type='require_parameter' name='bar']
+---
+
+Create studio folder
+	sudo mkdir /srv/studios/{{studio}}
+
+Add user, assign to group, set home directory, set permissions
+	sudo adduser user_studio_{{studio}}
+	sudo usermod -a -G group_studiousers user_studio_{{studio}}
+	sudo usermod -d /srv/studios/{{studio}} user_studio_{{studio}}
+	sudo chown user_studio_{{studio}}:user_studio_{{studio}}  /srv/studios/{{studio}}
+	sudo chmod u+w /srv/studios/{{studio}}
+
+Create NGINX pool for studio
+	sudo cp /etc/php/8.1/fpm/pool.d/www.conf /etc/php/8.1/fpm/pool.d/pool-studio-{{studio}}.conf 
+	sudo nano  /etc/php/8.1/fpm/pool.d/pool-studio-{{studio}}.conf
+	Set the pool name at the top
+	[pool-studio-{{studio}}]
+	Set the following:
+	user = user_studio_{{studio}}
+	group = user_studio_{{studio}}
+	Set the sock
+	listen = /run/php/php8.1-fpm.studio-{{studio}}.sock
+
+Restart the pool
+	sudo systemctl restart php8.1-fpm
+
+Turn on error messages
+	Edit the php.ini file
+	sudo vi /etc/php/8.1/fpm/php.ini
+	Replace ‘display_errors = Off’ with ‘display_errors = On’
+	sudo systemctl restart php8.1-fpm.service
+
+
+Restart the pool
+sudo systemctl restart php8.1-fpm
+
+Create and run task to setup a task to create new site in the studio of the vps
+Set hostname = ‘studio.{{studio}}’
+Set websitetype as ‘tasks’
