@@ -2,10 +2,12 @@
     "tasks":
     [
       {
-        "id": 1
+        "id": 1,
+        "title": "1: create task"
       },
       {
-        "id": 2
+        "id": 2,
+         "title": "2: foo bar task"
       }
     ]
   }
