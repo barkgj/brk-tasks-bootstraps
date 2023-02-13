@@ -2,14 +2,21 @@ Create studio (task)
 
 [brk_task_instruction type='require_parameter' name='studio']
 [brk_task_instruction type='require_parameter' name='bootstrap_type']
+[brk_task_instruction type='require_parameter' name='password']
+[brk_task_instruction type='require_parameter' name='studio_base_scheme']
+[brk_task_instruction type='require_parameter' name='studio_base_hostname']
 
 ---
 
 Create studio folder
 	sudo mkdir /srv/studios/{{studio}}
 
+Define password
+	
+
 Add user, assign to group, set home directory, set permissions
 	sudo adduser user_studio_{{studio}}
+	enter password {{password}}
 	sudo usermod -a -G group_studiousers user_studio_{{studio}}
 	sudo usermod -d /srv/studios/{{studio}} user_studio_{{studio}}
 	sudo chown user_studio_{{studio}}:user_studio_{{studio}}  /srv/studios/{{studio}}
@@ -37,7 +44,17 @@ Turn on error messages
 
 
 Restart the pool
-sudo systemctl restart php8.1-fpm
+	sudo systemctl restart php8.1-fpm
+
+If '{{bootstrap_type}}' == 'afnetix'
+	Create 'media' website in the studio
+		[brk_task_instruction type='create_task_instance' create_taskid='3' name='studio' scheme='{{studio_base_scheme}}' hostname='media.{{studio_base_hostname}}' type='media']
+
+	Create 'tasks' website in the studio
+		[brk_task_instruction type='create_task_instance' create_taskid='3' name='studio' scheme='{{studio_base_scheme}}' hostname='studio.{{studio_base_hostname}}' type='tasks']
+
+	Create 'afnetix' website in the studio
+		[brk_task_instruction type='create_task_instance' create_taskid='3' name='studio' scheme='{{studio_base_scheme}}' hostname='studio.{{studio_base_hostname}}' type='afnetix']
 
 Create and run task instance to bootstrap the studio based on the '{{bootstrap_type}}'
 (bootstrapping a studio means to setup tasks to do things like create new sites in the studio,
